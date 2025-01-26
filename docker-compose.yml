@@ -1,0 +1,15 @@
+services:
+  nginx:
+    image: nginx:1.27.3-alpine-slim
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - campaign-app
+
+  campaign-app:
+    image: hgunwant2312/zenodeck-campaign:latest
+    env_file:
+      - .env.campaign
