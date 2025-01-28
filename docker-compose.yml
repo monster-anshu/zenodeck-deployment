@@ -7,7 +7,7 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./www/certbot:/var/certbot/:ro
+      - ./certbot:/var/www/certbot/:ro
 
   campaign-app:
     image: hgunwant2312/zenodeck-campaign:latest
