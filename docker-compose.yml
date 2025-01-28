@@ -32,3 +32,6 @@ services:
       - ./certbot/www/:/var/www/certbot/:rw
       - ./certbot/conf/:/etc/letsencrypt/:rw
     command: certonly --webroot --webroot-path /var/www/certbot/ --keep-until-expiring --email info@himanshu-gunwant.com -d ssh.himanshu-gunwant.com --agree-tos 
+
+volumes:
+  portainer_data:
