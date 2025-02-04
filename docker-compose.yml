@@ -18,7 +18,7 @@ services:
     image: portainer/portainer-ce:2.21.5
     container_name: portainer
     volumes:
-      - portainer_data:/data
+      - ./portainer_data:/data
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
 
@@ -29,6 +29,3 @@ services:
       - ./certbot/www/:/var/www/certbot/:rw
       - ./certbot/conf/:/etc/letsencrypt/:rw
     command: certonly --webroot -w /var/www/certbot/ --keep-until-expiring --email info@himanshu-gunwant.com -d ssh.himanshu-gunwant.com --agree-tos
-
-volumes:
-  portainer_data:
