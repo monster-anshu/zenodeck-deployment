@@ -13,6 +13,11 @@ services:
     image: hgunwant2312/zenodeck-campaign:latest
     env_file:
       - .env.campaign
+      
+  globetrotter-app:
+    image: hgunwant2312/globetrotter
+    env_file:
+      - .env.globetrotter
 
   portainer:
     image: portainer/portainer-ce:2.21.5
