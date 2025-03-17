@@ -23,10 +23,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=https"
-      - "traefik.http.routers.traefik.rule=Host(`arm.himanshu-gunwant.com`)"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.himanshu-gunwant.com`)"
       - "traefik.http.routers.traefik.tls.certresolver=cloudflare"
       - "traefik.http.routers.traefik.service=api@internal"
-      # - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
 
   portainer:
       image: portainer/portainer-ce:lts
@@ -36,9 +36,9 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock
       restart: always
       labels:
-        - "traefik.enable=false"
+        - "traefik.enable=true"
         - "traefik.http.routers.portainer.entrypoints=https"
-        - "traefik.http.routers.portainer.rule=PathPrefix(`/`)"
+        - "traefik.http.routers.portainer.rule=Host(`ssh.himanshu-gunwant.com`)"
         - "traefik.http.routers.portainer.tls.certresolver=cloudflare"
         - "traefik.http.services.portainer.loadbalancer.server.port=9443"
 
