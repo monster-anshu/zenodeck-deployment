@@ -30,7 +30,9 @@ services:
       - "traefik.http.routers.traefik.service=api@internal"
 
   campaign-app:
-    image: campaign-app
+    image: hgunwant2312/zenodeck-campaign:latest
+    env_file:
+      - .env.campaign
     networks:
       proxy:
     labels:
@@ -41,7 +43,9 @@ services:
       - "traefik.http.routers.campaign.tls.certresolver=tlsResolver"
 
   globetrotter-app:
-    image: globetrotter-app
+    image: hgunwant2312/globetrotter
+    env_file:
+      - .env.globetrotter
     networks:
       proxy:
     labels:
@@ -52,7 +56,9 @@ services:
       - "traefik.http.routers.globetrotter.tls.certresolver=tlsResolver"
 
   api-snappy:
-    image: api-snappy
+    image: hgunwant2312/api-snappy
+    env_file:
+      - .env.api-snappy
     networks:
       proxy:
     labels:
@@ -74,6 +80,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
       - /:/host
-      
+
 networks:
   proxy:
