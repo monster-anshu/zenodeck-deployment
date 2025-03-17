@@ -2,6 +2,14 @@ api:
   dashboard: true
   debug: false
 
+tls:
+  stores:
+    default:
+      defaultGeneratedCert:
+        resolver: tlsResolver
+        domain:
+          main: server-1.himanshu-gunwant.com
+
 entryPoints:
   web:
     address: ":80"

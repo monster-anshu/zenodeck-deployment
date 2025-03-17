@@ -17,17 +17,17 @@ services:
       - TRAEFIK_DASHBOARD_CREDENTIALS=${TRAEFIK_DASHBOARD_CREDENTIALS}
       - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.yaml:/traefik.yaml:ro
       - ./acme.json:/acme.json
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik.entrypoints=https"
-      - "traefik.http.routers.traefik.rule=Host(`server-1.himanshu-gunwant.com`)"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.rule=PathPrefix(`/`)"
       - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
-      - "traefik.http.routers.traefik.tls.certresolver=tlsResolver"
       - "traefik.http.routers.traefik.middlewares=traefik-auth"
       - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.tls.certresolver=tlsResolver"
 
   campaign-app:
     image: hgunwant2312/zenodeck-campaign:latest
@@ -37,9 +37,9 @@ services:
       proxy:
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.campaign.entrypoints=websecure"
       - "traefik.http.routers.campaign.rule=PathPrefix(`/api/v1/campaign`)"
       - "traefik.http.services.campaign.loadbalancer.server.port=3000"
-      - "traefik.http.routers.campaign.entrypoints=websecure"
       - "traefik.http.routers.campaign.tls.certresolver=tlsResolver"
 
   globetrotter-app:
@@ -50,9 +50,9 @@ services:
       proxy:
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.globetrotter.entrypoints=websecure"
       - "traefik.http.routers.globetrotter.rule=PathPrefix(`/api/v1/globetrotter`)"
       - "traefik.http.services.globetrotter.loadbalancer.server.port=3000"
-      - "traefik.http.routers.globetrotter.entrypoints=websecure"
       - "traefik.http.routers.globetrotter.tls.certresolver=tlsResolver"
 
   api-snappy:
@@ -63,12 +63,12 @@ services:
       proxy:
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.snappy.entrypoints=websecure"
       - "traefik.http.routers.snappy.rule=PathPrefix(`/api/v1/snappy`)"
       - "traefik.http.services.snappy.loadbalancer.server.port=5000"
-      - "traefik.http.routers.snappy.entrypoints=websecure"
-      - "traefik.http.routers.snappy.tls.certresolver=tlsResolver"
       - "traefik.http.middlewares.snappy-strip.stripprefix.prefixes=/api/v1/snappy"
       - "traefik.http.routers.snappy.middlewares=snappy-strip"
+      - "traefik.http.routers.snappy.tls.certresolver=tlsResolver"
 
   portainer_agent:
     image: portainer/agent:2.27.1
