@@ -41,7 +41,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.portainer.entrypoints=https"
-        - "traefik.http.routers.portainer.rule=Host(`ssh.himanshu-gunwant.com`)"
+        - "traefik.http.routers.portainer.rule=Host(`portainer.himanshu-gunwant.com`)"
         - "traefik.http.routers.portainer.tls.certresolver=cloudflare"
         - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
