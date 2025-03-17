@@ -8,7 +8,7 @@ services:
     env_file:
       - .env
     networks:
-       proxy:
+      proxy:
     ports:
       - 80:80
       - 443:443
@@ -36,6 +36,8 @@ services:
         - ./portainer_data:/data
         - /var/run/docker.sock:/var/run/docker.sock
       restart: always
+      networks:
+        proxy:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.portainer.entrypoints=https"
