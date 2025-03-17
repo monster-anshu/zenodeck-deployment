@@ -49,4 +49,5 @@ services:
 
 networks:
   proxy:
+    name: proxy
     # external: true # or comment this line to auto create the network
