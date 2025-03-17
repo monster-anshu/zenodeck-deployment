@@ -1,0 +1,47 @@
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true  
+    env_file:
+      - .env
+    networks:
+       proxy:
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - TRAEFIK_DASHBOARD_CREDENTIALS=${TRAEFIK_DASHBOARD_CREDENTIALS}
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
+    volumes:
+      - ./traefik.yaml:/traefik.yaml:ro
+      - ./acme.json:/acme.json
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.rule=Host(`arm.himanshu-gunwant.com`)"
+      - "traefik.http.routers.traefik.tls.certresolver=cloudflare"
+      - "traefik.http.routers.traefik.service=api@internal"
+      # - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
+
+  portainer:
+      image: portainer/portainer-ce:lts
+      container_name: portainer
+      volumes:
+        - ./portainer_data:/data
+        - /var/run/docker.sock:/var/run/docker.sock
+      restart: always
+      labels:
+        - "traefik.enable=false"
+        - "traefik.http.routers.portainer.entrypoints=websecure"
+        - "traefik.http.routers.portainer.rule=PathPrefix(`/`)"
+        - "traefik.http.routers.portainer.tls.certresolver=cloudflare"
+        - "traefik.http.services.portainer.loadbalancer.server.port=9443"
+
+networks:
+  proxy:
+    # external: true # or comment this line to auto create the network
