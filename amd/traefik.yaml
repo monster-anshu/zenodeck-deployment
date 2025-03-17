@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/traefik-v3.json
 api:
   dashboard: true
   debug: false
@@ -30,7 +31,7 @@ certificatesResolvers:
   tlsResolver:
     acme:
       email: info@himanshu-gunwant.com
-      storage: acme.json
+      storage: /acme.json
       dnsChallenge:
         provider: cloudflare
         resolvers:

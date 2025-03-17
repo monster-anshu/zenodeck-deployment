@@ -1,34 +1,4 @@
-
 services:
-  traefik:
-    image: traefik:latest
-    container_name: traefik
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true  
-    env_file:
-      - .env
-    networks:
-      proxy:
-    ports:
-      - 80:80
-      - 443:443
-    environment:
-      - TRAEFIK_DASHBOARD_CREDENTIALS=${TRAEFIK_DASHBOARD_CREDENTIALS}
-      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
-    volumes:
-      - ./traefik.yaml:/traefik.yaml:ro
-      - ./acme:/etc/traefik/acme
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.entrypoints=websecure"
-      - "traefik.http.routers.traefik.rule=PathPrefix(`/`)"
-      - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
-      - "traefik.http.routers.traefik.middlewares=traefik-auth"
-      - "traefik.http.routers.traefik.service=api@internal"
-      - "traefik.http.routers.traefik.tls.certresolver=tlsResolver"
-
   campaign-app:
     image: hgunwant2312/zenodeck-campaign:latest
     env_file:
@@ -85,3 +55,4 @@ services:
 
 networks:
   proxy:
+    external: true
