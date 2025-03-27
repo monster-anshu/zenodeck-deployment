@@ -3,14 +3,14 @@ api:
   debug: false
 
 entryPoints:
-  http:
+  web:
     address: ":80"
     http:
       redirections:
         entryPoint:
-          to: https
+          to: websecure
           scheme: https
-  https:
+  websecure:
     address: ":443"
 
 serversTransport:
@@ -22,7 +22,7 @@ providers:
     exposedByDefault: false
 
 certificatesResolvers:
-  cloudflare:
+  tlsResolver:
     acme:
       email: info@himanshu-gunwant.com
       storage: acme.json

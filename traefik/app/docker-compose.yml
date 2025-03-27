@@ -7,7 +7,7 @@ services:
       proxy:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.campaign.entrypoints=https"
+      - "traefik.http.routers.campaign.entrypoints=websecure"
       - "traefik.http.routers.campaign.rule=PathPrefix(`/api/v1/connect`)"
       - "traefik.http.services.campaign.loadbalancer.server.port=3000"
       - "traefik.http.routers.campaign.tls.certresolver=tlsResolver"
