@@ -17,9 +17,10 @@ services:
       - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
     volumes:
       - ./traefik.yaml:/traefik.yaml:ro
-      - ./acme.json:/acme.json
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/traefik/acme.json:/acme.json
+      - /var/lib/traefik/conf:/var/lib/traefik/conf
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=websecure"
