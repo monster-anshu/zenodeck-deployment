@@ -1,0 +1,30 @@
+services:
+  portainer:
+    image: portainer/portainer-ce:lts
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - AGENT_SECRET=${PORTAINER_AGENT_SECRET}
+    networks:
+      - proxy
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.portainer.entrypoints=websecure
+        - traefik.http.routers.portainer.rule=Host(`portainer.himanshu-gunwant.com`)
+        - traefik.http.routers.portainer.tls.certresolver=tlsResolver
+        - traefik.http.services.portainer.loadbalancer.server.port=9000
+
+volumes:
+  portainer_data:
+
+networks:
+  proxy:
+    external: true
