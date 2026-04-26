@@ -1,12 +1,12 @@
 services:
   traefik:
-    image: traefik:latest
+    image: traefik:v3.6
 
     env_file:
       - .env
 
     networks:
-      - proxy
+      - traefik_proxy
 
     ports:
       - target: 80
@@ -54,6 +54,7 @@ services:
       - "traefik.http.routers.traefik.service=api@internal"
 
 networks:
-  proxy:
+  traefik_proxy:
+    name: traefik_proxy
     driver: overlay
     attachable: true
