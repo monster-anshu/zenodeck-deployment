@@ -37,14 +37,14 @@ services:
         constraints:
           - node.role == manager
 
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.entrypoints=websecure"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.himanshu-gunwant.com`)"
-    #  - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
-      - "traefik.http.routers.traefik.tls.certresolver=tlsResolver"
-    #  - "traefik.http.routers.traefik.middlewares=traefik-auth"
-      - "traefik.http.routers.traefik.service=api@internal"
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.traefik.entrypoints=websecure"
+        - "traefik.http.routers.traefik.rule=Host(`traefik.himanshu-gunwant.com`)"
+      #  - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
+        - "traefik.http.routers.traefik.tls.certresolver=tlsResolver"
+      #  - "traefik.http.routers.traefik.middlewares=traefik-auth"
+        - "traefik.http.routers.traefik.service=api@internal"
 
 networks:
   traefik_proxy:
