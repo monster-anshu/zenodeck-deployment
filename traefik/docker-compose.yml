@@ -29,20 +29,13 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./traefik.yaml:/traefik.yaml:ro
 
-    command:
-      - "--providers.swarm.endpoint=unix:///var/run/docker.sock"
-      - "--providers.swarm.watch=true"
-      - "--providers.swarm.exposedbydefault=false"
-      - "--providers.swarm.network=traefik_proxy"
-      - "--log.level=DEBUG"
-      - "--accesslog=true"
-
     deploy:
+      mode: replicated
+      replicas: 1
       placement:
+
         constraints:
-          - node.labels.arm == true
-      restart_policy:
-        condition: any
+          - node.role == manager
 
     labels:
       - "traefik.enable=true"

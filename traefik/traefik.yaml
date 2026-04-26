@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://json.schemastore.org/traefik-v3.json
 api:
   dashboard: true
-  debug: false
+  debug: true
 
 entryPoints:
   web:
@@ -18,11 +17,11 @@ serversTransport:
   insecureSkipVerify: true
 
 providers:
-  # swarm:
-  #   endpoint: "unix:///var/run/docker.sock"
-  #   watch: true
-  #   exposedByDefault: false
-  #   network: traefik_proxy
+  swarm:
+    endpoint: "unix:///var/run/docker.sock"
+    watch: true
+    exposedByDefault: false
+    network: traefik_proxy
   file:
     directory: "/var/lib/traefik/conf"
 
@@ -37,3 +36,7 @@ certificatesResolvers:
           - "1.1.1.1:53"
           - "1.0.0.1:53"
 
+log:
+  level: DEBUG
+
+accessLog: {}
