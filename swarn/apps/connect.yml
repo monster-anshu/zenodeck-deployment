@@ -1,0 +1,25 @@
+services:
+  connect-app:
+    image: hgunwant2312/zenodeck-connect:latest
+    env_file:
+      - .env.connect
+    networks:
+      - traefik_proxy
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.arm == true
+      restart_policy:
+        condition: any
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.connect-app.entrypoints=websecure"
+        - "traefik.http.routers.connect-app.rule=PathPrefix(`/api/v1/connect`)"
+        - "traefik.http.services.connect-app.loadbalancer.server.port=3000"
+        - "traefik.http.routers.connect-app.tls.certresolver=tlsResolver"
+        
+networks:
+  traefik_proxy:
+    external: true

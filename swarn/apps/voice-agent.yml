@@ -1,0 +1,25 @@
+services:
+  voice-agent:
+    image: hgunwant2312/voice-agent:latest
+    env_file:
+      - .env.voice-agent
+    networks:
+      - traefik_proxy
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.arm == true
+      restart_policy:
+        condition: any
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.voice-agent.entrypoints=websecure"
+        - "traefik.http.routers.voice-agent.rule=PathPrefix(`/api/v1/voice-agent`)"
+        - "traefik.http.services.voice-agent.loadbalancer.server.port=3000"
+        - "traefik.http.routers.voice-agent.tls.certresolver=tlsResolver"
+
+networks:
+  traefik_proxy:
+    external: true
