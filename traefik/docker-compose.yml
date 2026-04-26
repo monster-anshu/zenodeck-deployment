@@ -34,7 +34,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.labels.arm == true
+          - node.role == manager
       restart_policy:
         condition: any
 
