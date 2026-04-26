@@ -20,7 +20,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.arm == true
+          - node.labels.amd == true
       restart_policy:
         condition: any
       labels:
