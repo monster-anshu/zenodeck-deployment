@@ -39,12 +39,20 @@ services:
 
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.traefik.entrypoints=websecure"
-        - "traefik.http.routers.traefik.rule=Host(`traefik.himanshu-gunwant.com`)"
-      #  - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
-        - "traefik.http.routers.traefik.tls.certresolver=tlsResolver"
-      #  - "traefik.http.routers.traefik.middlewares=traefik-auth"
-        - "traefik.http.routers.traefik.service=api@internal"
+
+        # Dashboard router
+        - "traefik.http.routers.dashboard.rule=Host(`traefik.himanshu-gunwant.com`)"
+        - "traefik.http.routers.dashboard.entrypoints=websecure"
+        - "traefik.http.routers.dashboard.service=api@internal"
+        - "traefik.http.routers.dashboard.tls=true"
+        - "traefik.http.routers.dashboard.tls.certresolver=tlsResolver"
+
+        # Basic‑auth middleware
+        # - "traefik.http.middlewares.dashboard-auth.basicauth.users=<PASTE_HASH_HERE>"
+        # - "traefik.http.routers.dashboard.middlewares=dashboard-auth@swarm"
+
+        # Service hint
+        - "traefik.http.services.traefik.loadbalancer.server.port=8080"
 
 networks:
   traefik_proxy:
