@@ -14,10 +14,12 @@ services:
       - target: 80
         published: 80
         mode: ingress
+        protocol: tcp
       - target: 443
         published: 443
-        mode: ingress
-
+        protocol: tcp
+        mode: host
+        
     environment:
       - TRAEFIK_DASHBOARD_CREDENTIALS=${TRAEFIK_DASHBOARD_CREDENTIALS}
       - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
