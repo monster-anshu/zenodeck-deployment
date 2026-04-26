@@ -16,11 +16,11 @@ services:
         constraints:
           - node.role == manager
       labels:
-        - traefik.enable=true
-        - traefik.http.routers.portainer.entrypoints=websecure
-        - traefik.http.routers.portainer.rule=Host(`portainer.himanshu-gunwant.com`)
-        - traefik.http.routers.portainer.tls.certresolver=tlsResolver
-        - traefik.http.services.portainer.loadbalancer.server.port=9000
+        - "traefik.enable=true"
+        - "traefik.http.routers.portainer.entrypoints=websecure"
+        - "traefik.http.routers.portainer.rule=Host(`portainer.himanshu-gunwant.com`)"
+        - "traefik.http.routers.portainer.tls.certresolver=tlsResolver"
+        - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
 volumes:
   portainer_data:
