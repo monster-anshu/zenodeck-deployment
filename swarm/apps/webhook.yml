@@ -1,0 +1,77 @@
+services:
+  webhook:
+    image: webhooksite/webhook.site
+    command: php artisan queue:work --daemon --tries=3 --timeout=1000
+    environment:
+      - APP_ENV=dev
+      - APP_DEBUG=true
+      - APP_URL=https://webhook.himanshu-gunwant.com
+      - APP_LOG=errorlog
+      - DB_CONNECTION=sqlite
+      - REDIS_HOST=webhook_redis
+      - BROADCAST_DRIVER=redis
+      - CACHE_DRIVER=redis
+      - QUEUE_DRIVER=redis
+      - ECHO_HOST_MODE=path
+    networks:
+      - traefik_proxy
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.arm == true
+      restart_policy:
+        condition: any
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.webhook.entrypoints=websecure"
+        - "traefik.http.routers.webhook.rule=Host(`webhook.himanshu-gunwant.com`)"
+        - "traefik.http.services.webhook.loadbalancer.server.port=80"
+        - "traefik.http.routers.webhook.tls.certresolver=tlsResolver"
+
+  redis:
+    image: redis:alpine
+    networks:
+      - traefik_proxy
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.amd == true
+      restart_policy:
+        condition: any
+
+  laravel-echo-server:
+    image: webhooksite/laravel-echo-server
+    command:
+      - exec
+      - laravel-echo-server
+      - start
+      - --force
+    environment:
+      - LARAVEL_ECHO_SERVER_AUTH_HOST=https://webhook.himanshu-gunwant.com
+      - LARAVEL_ECHO_SERVER_HOST=0.0.0.0
+      - LARAVEL_ECHO_SERVER_PORT=6001
+      - ECHO_REDIS_PORT=6379
+      - ECHO_REDIS_HOSTNAME=webhook_redis
+      - ECHO_PROTOCOL=http
+      - ECHO_ALLOW_CORS=true
+      - ECHO_ALLOW_ORIGIN=*
+      - ECHO_ALLOW_METHODS=*
+      - ECHO_ALLOW_HEADERS=*
+    networks:
+      - traefik_proxy
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.amd == true
+      restart_policy:
+        condition: any
+
+networks:
+  traefik_proxy:
+    external: true
