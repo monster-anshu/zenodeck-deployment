@@ -18,11 +18,11 @@ serversTransport:
   insecureSkipVerify: true
 
 providers:
-  swarm:
-    endpoint: "unix:///var/run/docker.sock"
-    watch: true
-    exposedByDefault: false
-    network: proxy
+  # swarm:
+  #   endpoint: "unix:///var/run/docker.sock"
+  #   watch: true
+  #   exposedByDefault: false
+  #   network: proxy
   file:
     directory: "/var/lib/traefik/conf"
 

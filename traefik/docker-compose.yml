@@ -17,7 +17,7 @@ services:
         published: 443
         protocol: tcp
         mode: ingress
-        
+
     environment:
       - TRAEFIK_DASHBOARD_CREDENTIALS=${TRAEFIK_DASHBOARD_CREDENTIALS}
       - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
@@ -28,6 +28,14 @@ services:
       - /var/lib/traefik/conf:/var/lib/traefik/conf
       - /etc/localtime:/etc/localtime:ro
       - ./traefik.yaml:/traefik.yaml:ro
+
+    command:
+      - "--providers.swarm.endpoint=unix:///var/run/docker.sock"
+      - "--providers.swarm.watch=true"
+      - "--providers.swarm.exposedbydefault=false"
+      - "--providers.swarm.network=traefik_proxy"
+      - "--log.level=DEBUG"
+      - "--accesslog=true"
 
     deploy:
       placement:
@@ -47,6 +55,5 @@ services:
 
 networks:
   proxy:
-    name: proxy
     driver: overlay
     attachable: true
