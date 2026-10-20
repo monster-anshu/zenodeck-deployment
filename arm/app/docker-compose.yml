@@ -7,10 +7,10 @@ services:
       proxy:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.campaign.entrypoints=websecure"
-      - "traefik.http.routers.campaign.rule=PathPrefix(`/api/v1/connect`)"
-      - "traefik.http.services.campaign.loadbalancer.server.port=3000"
-      - "traefik.http.routers.campaign.tls.certresolver=tlsResolver"
+      - "traefik.http.routers.connect.entrypoints=websecure"
+      - "traefik.http.routers.connect.rule=PathPrefix(`/api/v1/connect`)"
+      - "traefik.http.services.connect.loadbalancer.server.port=3000"
+      - "traefik.http.routers.connect.tls.certresolver=tlsResolver"
 
   voice-agent:
     image: hgunwant2312/voice-agent:latest

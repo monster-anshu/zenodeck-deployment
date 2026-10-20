@@ -15,6 +15,7 @@ services:
       - ECHO_HOST_MODE=path
     networks:
       - traefik_proxy
+      - webhook_internal
     deploy:
       mode: replicated
       replicas: 1
@@ -33,7 +34,7 @@ services:
   redis:
     image: redis:alpine
     networks:
-      - traefik_proxy
+      - webhook_internal
     deploy:
       mode: replicated
       replicas: 1
@@ -63,6 +64,7 @@ services:
       - ECHO_ALLOW_HEADERS=*
     networks:
       - traefik_proxy
+      - webhook_internal
     deploy:
       mode: replicated
       replicas: 1
@@ -75,3 +77,5 @@ services:
 networks:
   traefik_proxy:
     external: true
+  webhook_internal:
+    driver: overlay
